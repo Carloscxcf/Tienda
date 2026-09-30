@@ -1,0 +1,19 @@
+{
+    "list.translate": "List",
+    "Home": "Home",
+    "Id": "Id",
+    "Price": "Price",
+    "Name": "Name",
+    "Actions.table": "Actions",
+    "Search": "Search",
+    "Success": "Success",
+    "Error": "Error",
+    "Product.toast.created.success": "Product added successfully",
+    "Product.toast.created.title": "Product created",
+    "Product.toast.create.error": "The product could not be added",
+    "Product.toast.updated.success": "Product updated successfully",
+    "Product.toast.updated.title": "Product updated",
+    "Product.toast.save.error": "The product could not be saved",
+    "Search.notification.success": "Search completed successfully",
+    "Search.notification.error": "The search could not be completed"
+}

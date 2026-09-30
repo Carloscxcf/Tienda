@@ -1,0 +1,72 @@
+<div *ngIf="visible" class="producto-modal-backdrop" (click)="cerrar()">
+  <section
+    class="producto-modal card"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="currentMode === 'details' ? producto?.nombre : (currentMode === 'edit' ? 'Editar producto' : 'Agregar producto')"
+    (click)="$event.stopPropagation()">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+        <div>
+          <h4 class="mb-1">
+            {{ currentMode === 'details' ? producto?.nombre : (currentMode === 'edit' ? 'Editar producto' : 'Agregar producto') }}
+          </h4>
+          <p class="text-muted mb-0" *ngIf="currentMode === 'create'">
+            Completa los datos del producto.
+          </p>
+        </div>
+        <button type="button" class="btn-close" aria-label="Cerrar" (click)="cerrar()"></button>
+      </div>
+
+      <ng-container *ngIf="currentMode === 'details'; else productoFormTemplate">
+        <dl class="row mb-0">
+          <dt class="col-sm-4">Precio</dt><dd class="col-sm-8">{{ producto?.precio }}</dd>
+          <dt class="col-sm-4">Descripción</dt><dd class="col-sm-8">{{ producto?.descripcion || '—' }}</dd>
+          <dt class="col-sm-4">Stock</dt><dd class="col-sm-8">{{ producto?.stock }}</dd>
+          <dt class="col-sm-4">ID de categoría</dt><dd class="col-sm-8">{{ producto?.idCategoria }}</dd>
+        </dl>
+        <div class="d-flex justify-content-end mt-4">
+          <button type="button" class="btn btn-primary" (click)="editarDesdeDetalle()">Editar</button>
+        </div>
+      </ng-container>
+
+      <ng-template #productoFormTemplate>
+        <form [formGroup]="productoForm" (ngSubmit)="guardar()" novalidate>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="modalNombre" class="form-label">Nombre *</label>
+              <input id="modalNombre" class="form-control" formControlName="nombre" maxlength="100">
+              <small class="text-danger" *ngIf="productoForm.get('nombre')?.touched && productoForm.get('nombre')?.invalid">Ingresa un nombre válido.</small>
+            </div>
+            <div class="col-md-6">
+              <label for="modalPrecio" class="form-label">Precio *</label>
+              <input id="modalPrecio" type="number" min="0" step="0.01" class="form-control" formControlName="precio">
+              <small class="text-danger" *ngIf="productoForm.get('precio')?.touched && productoForm.get('precio')?.invalid">Ingresa un precio válido.</small>
+            </div>
+            <div class="col-12">
+              <label for="modalDescripcion" class="form-label">Descripción</label>
+              <textarea id="modalDescripcion" rows="3" class="form-control" formControlName="descripcion" maxlength="500"></textarea>
+            </div>
+            <div class="col-md-6">
+              <label for="modalStock" class="form-label">Stock *</label>
+              <input id="modalStock" type="number" min="0" class="form-control" formControlName="stock">
+              <small class="text-danger" *ngIf="productoForm.get('stock')?.touched && productoForm.get('stock')?.invalid">El stock debe ser cero o mayor.</small>
+            </div>
+            <div class="col-md-6">
+              <label for="modalCategoria" class="form-label">ID de categoría *</label>
+              <input id="modalCategoria" type="number" min="1" class="form-control" formControlName="idCategoria">
+              <small class="text-danger" *ngIf="productoForm.get('idCategoria')?.touched && productoForm.get('idCategoria')?.invalid">Ingresa un ID de categoría válido.</small>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button type="button" class="btn btn-outline-secondary" [disabled]="guardando" (click)="cerrar()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="guardando">
+              {{ guardando ? 'Guardando...' : (currentMode === 'edit' ? 'Guardar cambios' : 'Guardar producto') }}
+            </button>
+          </div>
+        </form>
+      </ng-template>
+    </div>
+  </section>
+</div>

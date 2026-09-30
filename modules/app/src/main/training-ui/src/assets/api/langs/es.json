@@ -1,0 +1,19 @@
+{
+    "list.translate": "Listado",
+    "Home": "Inicio",
+    "Id": "Id",
+    "Price": "Precio",
+    "Name": "Nombre",
+    "Actions.table": "Actions",
+    "Search": "Buscar",
+    "Success": "Éxito",
+    "Error": "Error",
+    "Product.toast.created.success": "Producto agregado correctamente",
+    "Product.toast.created.title": "Producto creado",
+    "Product.toast.create.error": "No se pudo agregar el producto",
+    "Product.toast.updated.success": "Producto actualizado correctamente",
+    "Product.toast.updated.title": "Producto actualizado",
+    "Product.toast.save.error": "No se pudo guardar el producto",
+    "Search.notification.success": "Búsqueda realizada correctamente",
+    "Search.notification.error": "No se pudo realizar la búsqueda"
+}

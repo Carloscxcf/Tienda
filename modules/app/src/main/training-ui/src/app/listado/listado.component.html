@@ -1,0 +1,112 @@
+<div class="content__boxed">
+  <div class="content__wrap">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-8 gap-3 align-items-center justify-content-md-start">
+            <h2>{{ "List" | i18n }}</h2>
+            <form [formGroup]="formBusqueda" class="formBusqueda">
+              <div class="row my-2">
+                <div class="col-md-8">
+                  <div class="input-group rounded">
+                    <input
+                      id="search"
+                      name="search"
+                      type="search"
+                      class="form-control rounded"
+                      placeholder="{{ 'Search' | i18n }}"
+                      aria-label="Search"
+                      aria-describedby="search-addon"
+                      formControlName="search"
+                      maxlength="20">
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <abbr title="Buscar">
+                    <button
+                      type="button"
+                      class="btn btn-primary mx-1"
+                      (click)="getProductos(0)"
+                      [disabled]="cargando">
+                      {{ "Search" | i18n }}
+                    </button>
+                  </abbr>
+                </div>
+                <div class="col-md-2">
+                  <button type="button" class="btn btn-primary btn-sm mx-1 text-nowrap" (click)="abrirModalProducto('create')">
+                    <i class="fa fa-plus-circle me-1" aria-hidden="true"></i>
+                    Agregar producto
+                  </button>
+                </div>
+              </div>
+              @if (formBusqueda.get('search')?.hasError('maxlength')) {
+                <small class="text-danger">La búsqueda no puede superar 20 caracteres.</small>
+              }
+            </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">{{ "Id" | i18n }}</th>
+                  <th scope="col">{{ "Price" | i18n }}</th>
+                  <th scope="col">{{ "Name" | i18n }}</th>
+                  <th scope="col">{{ "Description" | i18n }}</th>
+                  <th scope="col">{{ "Stock" | i18n }}</th>
+                  <th scope="col">{{ "Category ID" | i18n }}</th>
+                  <th scope="col" class="sticky-actions">{{ "Actions.table" | i18n }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (productos.length > 0) {
+                  @for (producto of productos; track producto.id ?? $index) {
+                    <tr>
+                      <td class="verticalCenter">{{ producto.id }}</td>
+                      <td class="verticalCenter">{{ producto.precio }}</td>
+                      <td class="verticalCenter">{{ producto.nombre }}</td>
+                      <td class="verticalCenter">{{ producto.descripcion || '—' }}</td>
+                      <td class="verticalCenter">{{ producto.stock }}</td>
+                      <td class="verticalCenter">{{ producto.idCategoria }}</td>
+                      <td class="verticalCenter sticky-actions">
+                        <button type="button" class="btn btn-primary btn-sm me-4" title="Editar" aria-label="Editar producto" (click)="abrirModalProducto('edit', producto)">
+                          <i class="fa fa-pen" aria-hidden="tru"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm me-4" title="Eliminar" aria-label="Eliminar producto" (click)="eliminarProducto(producto)">
+                          <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                } @else {
+                  <tr>
+                    <td class="text-center" colspan="7">No hay registros</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div> 
+         </div> 
+        @if (productos.length > 0 && paginator) {
+          <div class="col-12 mt-3">
+            <h6 class="text-muted">Total de productos: {{ paginator.totalElements }}</h6>
+            <div class="d-flex justify-content-end">
+              <app-paginator *ngIf="paginator"
+                [paginator]="paginator"
+                (page)="getProductos($event)">
+              </app-paginator>
+            </div>
+          </div>
+        }
+      </div> 
+    </div> 
+  </div> 
+</div>
+<app-add-producto-modal
+  [visible]="modalProductoVisible"
+  [mode]="modalProductoMode"
+  [producto]="productoSeleccionado"
+  (closed)="cerrarModalProducto()"
+  (saved)="alGuardarProducto()">
+</app-add-producto-modal>
